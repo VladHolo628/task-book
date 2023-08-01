@@ -3,10 +3,11 @@ import {
   Typography,
   Box,
   Button,
-  Link,
   Divider,
   List,
+  Link,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { Google, GitHub } from "@mui/icons-material";
 import { AuthorizeForm } from "./components/AuthorizeForm";
 import { IAuthorizeCard } from "./types";
@@ -29,7 +30,7 @@ export const AuthorizeCard = ({ isRegister, formHandler }: IAuthorizeCard) => {
         variant="h5"
         textAlign={"center"}
       >
-        Log in
+        {isRegister ? "Register" : "Log In"}
       </Typography>
 
       <Box>
@@ -48,12 +49,24 @@ export const AuthorizeCard = ({ isRegister, formHandler }: IAuthorizeCard) => {
             {isRegister ? (
               <Typography textAlign={"center"}>
                 Already have an account?{" "}
-                <Link sx={{ cursor: "pointer" }}>Log In</Link>
+                <Link
+                  component={RouterLink}
+                  to={"/login"}
+                  sx={{ cursor: "pointer" }}
+                >
+                  Log In
+                </Link>
               </Typography>
             ) : (
               <Typography textAlign={"center"}>
                 Don't have an account yet?{" "}
-                <Link sx={{ cursor: "pointer" }}>Register</Link>
+                <Link
+                  component={RouterLink}
+                  to={"/register"}
+                  sx={{ cursor: "pointer" }}
+                >
+                  Register
+                </Link>
               </Typography>
             )}
 

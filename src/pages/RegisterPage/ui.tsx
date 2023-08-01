@@ -1,6 +1,6 @@
-import Logo from "@/shared/assets/logo.svg";
 import { Typography, Box, Link } from "@mui/material";
 import { AuthorizeCard } from "@/widgets/AuthorizeCard";
+import { LogoWithText } from "@/shared/ui/LogoWithText";
 
 export const RegisterPage = () => {
   const formHandler = (e: React.FormEvent) => {
@@ -18,20 +18,7 @@ export const RegisterPage = () => {
         padding: { xs: 1, sm: 4 },
       }}
     >
-      <Box sx={{ display: "flex" }}>
-        <img src={Logo} />
-        <Typography
-          sx={{
-            width: "50px",
-            ml: 2,
-            textTransform: "uppercase",
-            fontWeight: "bold",
-          }}
-          color={"primary"}
-        >
-          Task Book
-        </Typography>
-      </Box>
+      <LogoWithText />
       <Box
         display="flex"
         justifyContent="center"
