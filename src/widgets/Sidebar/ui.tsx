@@ -1,35 +1,24 @@
 import { LogoWithText } from "@/shared/ui/LogoWithText";
-import {
-  Drawer,
-  Typography,
-  Box,
-  Button,
-  Tabs,
-  Tab,
-  IconButton,
-} from "@mui/material";
+import { Drawer, Typography, Box, Button, Tabs, Tab } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import Diversity1Icon from "@mui/icons-material/Diversity1";
+
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import MenuIcon from "@mui/icons-material/Menu";
-import { ICategoryItem } from "./types";
+
+import { ICategoryItem, ISidebarProps } from "./types";
 import { NavLink, useMatch } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const categories: ICategoryItem[] = [
   {
     name: "Home",
     icon: <HomeIcon />,
   },
+
   {
-    name: "Family",
-    icon: <Diversity1Icon />,
-  },
-  {
-    name: "Work",
+    name: "Notes",
     icon: <WorkOutlineOutlinedIcon />,
   },
   {
@@ -38,9 +27,7 @@ const categories: ICategoryItem[] = [
   },
 ];
 
-export const Sidebar = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
+export const Sidebar = ({ toggleOpen, isOpen }: ISidebarProps) => {
   const match = useMatch("/:value");
   const [selectedTab, setSelectedTab] = useState<string>("home");
 
@@ -50,14 +37,10 @@ export const Sidebar = () => {
     }
   }, [match]);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   const drawer = (
     <>
       <Box marginBottom={4} alignSelf={"center"}>
-        <LogoWithText />
+        <LogoWithText textColor="primary" />
       </Box>
 
       <Tabs orientation="vertical" sx={{ mb: 2 }} value={selectedTab}>
@@ -83,7 +66,7 @@ export const Sidebar = () => {
               icon={category.icon}
               iconPosition="start"
               value={category.name.toLowerCase()}
-              onClick={handleDrawerToggle}
+              onClick={toggleOpen}
             />
           );
         })}
@@ -115,30 +98,17 @@ export const Sidebar = () => {
   );
 
   return (
-    <Box
-      sx={{
-        pl: { xs: 4, md: 0 },
-        pt: { xs: 4, md: 0 },
-      }}
-    >
-      <IconButton
-        aria-label="open drawer"
-        edge="start"
-        onClick={handleDrawerToggle}
-        sx={{ display: { md: "none" }, padding: 1 }}
-      >
-        <MenuIcon />
-      </IconButton>
+    <>
       <Drawer
         variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
+        open={isOpen}
+        onClose={toggleOpen}
         sx={{ display: { xs: "block", md: "none" } }}
         PaperProps={{
           sx: {
             height: "100vh",
             padding: 2,
-            width: "250px",
+            width: "200px",
             boxShadow: 2,
             position: "relative",
             justifyContent: "space-between",
@@ -166,6 +136,6 @@ export const Sidebar = () => {
       >
         {drawer}
       </Drawer>
-    </Box>
+    </>
   );
 };

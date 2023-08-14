@@ -27,5 +27,6 @@ export const Theme = ({ children }: IThemeProvider) => {
       fontSize: 16,
     },
   });
+
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
