@@ -5,8 +5,6 @@
 - Material UI
 - Zustand
 - Vite
-- Framer Motion
-- React-Hook-Form
 - FSD Arcitecture
- 
-This project is complex ToDo app with lots of features
+
+ This app is Todo App together with Notes App 
