@@ -14,14 +14,24 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ITaskItemProps } from "./types";
+import { useTodoStore } from "../../../../shared/store/todoStore";
+import { EditTaskModal } from "../EditTaskModal";
 
 export const TaskItem = ({ task }: ITaskItemProps) => {
-  const [isDone, setIsDone] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const handleEditModalOpen = () => setEditModalOpen(true);
+  const handleEditModalClose = () => setEditModalOpen(false);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const deleteTask = useTodoStore((state) => state.deleteTask);
+
+  const toggleTaskDone = useTodoStore((state) => state.toggleTaskDone);
 
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleActionsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -29,8 +39,18 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
     setAnchorEl(null);
   };
 
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDone(event.target.checked);
+  const handleDelete = () => {
+    deleteTask(task.id);
+    handleClose();
+  };
+
+  const handleCheck = () => {
+    toggleTaskDone(task.id);
+  };
+
+  const handleEditButtonClick = () => {
+    handleEditModalOpen();
+    handleClose();
   };
 
   const taskItemActionsMenu = (
@@ -54,7 +74,7 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
           p: 0,
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleEditButtonClick}>
           <Tooltip title="Edit Task">
             <IconButton aria-label="edit task">
               <EditIcon />
@@ -62,7 +82,7 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
           </Tooltip>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleDelete}>
           <Tooltip title="Delete Task">
             <IconButton aria-label="delete task">
               <DeleteIcon color="error" />
@@ -83,29 +103,39 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
         borderColor: "#282846",
         display: "flex",
         padding: { xs: 1, sm: "2 1" },
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "space-between",
       }}
     >
       <FormControlLabel
         sx={{
-          textDecoration: isDone ? "line-through" : "none",
+          textDecoration: task.done ? "line-through" : "none",
           cursor: "pointer",
-          mr: 2,
+
+          "&.MuiFormControlLabel-root": {
+            alignItems: "flex-start",
+            wordBreak: "break-word",
+          },
         }}
         value={task.name}
-        control={<Checkbox checked={isDone} onChange={handleCheck} />}
+        control={<Checkbox checked={task.done} onChange={handleCheck} />}
         label={task.name}
       />
 
       <Box>
         <Tooltip title="actions">
-          <IconButton onClick={handleClick}>
+          <IconButton onClick={handleActionsClick}>
             <MoreVertIcon />
           </IconButton>
         </Tooltip>
         {taskItemActionsMenu}
       </Box>
+      <EditTaskModal
+        open={editModalOpen}
+        onClose={handleEditModalClose}
+        taskId={task.id}
+        taskName={task.name}
+      />
     </ListItem>
   );
 };

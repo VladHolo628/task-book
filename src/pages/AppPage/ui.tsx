@@ -59,6 +59,7 @@ export const AppPage = () => {
             py: { xs: 1, sm: 2 },
             mt: { xs: 8, md: 0 },
             overflowY: { xs: "none", md: "auto" },
+
             scrollbarWidth: { xs: "none", md: "auto" },
             width: "100%",
             height: { md: "100vh" },

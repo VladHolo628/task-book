@@ -1,4 +1,8 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
 import { IThemeProvider } from "./types";
 
 export const Theme = ({ children }: IThemeProvider) => {

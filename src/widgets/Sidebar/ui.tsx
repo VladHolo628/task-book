@@ -1,12 +1,9 @@
 import { LogoWithText } from "@/shared/ui/LogoWithText";
 import { Drawer, Typography, Box, Button, Tabs, Tab } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
-import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
 import { ICategoryItem, ISidebarProps } from "./types";
 import { NavLink, useMatch } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -20,10 +17,6 @@ const categories: ICategoryItem[] = [
   {
     name: "Notes",
     icon: <WorkOutlineOutlinedIcon />,
-  },
-  {
-    name: "Sport",
-    icon: <DirectionsRunOutlinedIcon />,
   },
 ];
 
