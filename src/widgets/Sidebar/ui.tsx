@@ -2,7 +2,6 @@ import { LogoWithText } from "@/shared/ui/LogoWithText";
 import { Drawer, Typography, Box, Button, Tabs, Tab } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { ICategoryItem, ISidebarProps } from "./types";
 import { NavLink, useMatch } from "react-router-dom";
@@ -10,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const categories: ICategoryItem[] = [
   {
-    name: "Home",
+    name: "ToDo",
     icon: <HomeIcon />,
   },
 
@@ -38,7 +37,7 @@ export const Sidebar = ({ toggleOpen, isOpen }: ISidebarProps) => {
 
       <Tabs orientation="vertical" sx={{ mb: 2 }} value={selectedTab}>
         <Typography color={"primary"} variant="h6" marginBottom={3}>
-          Categories
+          Systems
         </Typography>
         {categories.map((category) => {
           return (
@@ -65,9 +64,6 @@ export const Sidebar = ({ toggleOpen, isOpen }: ISidebarProps) => {
         })}
       </Tabs>
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button startIcon={<AddBoxOutlinedIcon />}>Add</Button>
-      </Box>
       <Box>
         <Typography color={"primary"} variant="h6" marginBottom={1}>
           Data
@@ -99,9 +95,9 @@ export const Sidebar = ({ toggleOpen, isOpen }: ISidebarProps) => {
         sx={{ display: { xs: "block", md: "none" } }}
         PaperProps={{
           sx: {
-            height: "100vh",
+            height: "100%",
             padding: 2,
-            width: "200px",
+            width: "300px",
             boxShadow: 2,
             position: "relative",
             justifyContent: "space-between",
@@ -119,7 +115,7 @@ export const Sidebar = ({ toggleOpen, isOpen }: ISidebarProps) => {
           sx: {
             height: "100vh",
             padding: 2,
-            width: "250px",
+            width: "100%",
             boxShadow: 2,
             position: "relative",
             justifyContent: "space-between",

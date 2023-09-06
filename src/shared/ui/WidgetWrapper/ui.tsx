@@ -10,6 +10,7 @@ export const WidgetWrapper = ({
       sx={{
         padding: 2,
         boxShadow: 2,
+        width: "100%",
       }}
     >
       <Typography marginBottom={3} color={"primary"} variant="h6">

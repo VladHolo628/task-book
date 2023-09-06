@@ -42,7 +42,7 @@ export const ToDo = ({ tasks }: IToDoProps) => {
               }}
             >
               <Typography textAlign={"center"} variant="body2">
-                No Tasks Yet ...
+                Everything is done :)
               </Typography>
             </ListItem>
           )}

@@ -6,4 +6,5 @@ export interface ITodoState {
   deleteTask: (taskId: number) => void;
   toggleTaskDone: (taskId: number) => void;
   editTaskName: (taskId: number, newName: string) => void;
+  setTasks: (fetchedTasks: ITask[]) => void;
 }

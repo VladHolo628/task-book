@@ -8,10 +8,12 @@ import {
   IconButton,
   AppBar,
   Toolbar,
-  Avatar,
+  Typography,
 } from "@mui/material";
 import { Outlet } from "react-router";
 import Logo from "@/shared/assets/logo.svg";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { AvatarWithMenu } from "@/shared/ui/AvatarWithMenu";
 
 export const AppPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,12 +22,14 @@ export const AppPage = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const menuItems = ["Profile", "Settings", "Log Out"];
+
   return (
     <>
       <AppBar
+        position="fixed"
         sx={{
-          display: { sx: "flex", md: "none" },
-          mb: "200",
+          display: { xs: "block", md: "none" },
         }}
       >
         <Toolbar
@@ -44,29 +48,70 @@ export const AppPage = () => {
             <MenuIcon />
           </IconButton>
           <img src={Logo} />
-          <Avatar>V</Avatar>
+          <AvatarWithMenu menuItems={menuItems} />
         </Toolbar>
       </AppBar>
 
-      <Stack direction={"row"}>
-        <Box>
+      <Stack
+        direction={"row"}
+        sx={{
+          mt: { xs: "70px", md: "0" },
+          height: { xs: "100%", md: "100vh" },
+        }}
+      >
+        <Box
+          sx={{
+            height: "100%",
+            display: { xs: "none", md: "block" },
+            minWidth: "250px",
+            width: "20%",
+          }}
+        >
           <Sidebar toggleOpen={handleDrawerToggle} isOpen={isSidebarOpen} />
         </Box>
 
-        <Container
-          sx={{
-            p: { sm: 2 },
-            py: { xs: 1, sm: 2 },
-            mt: { xs: 8, md: 0 },
-            overflowY: { xs: "none", md: "auto" },
+        <Box sx={{ flexGrow: 1, overflowY: "auto" }} height={"100%"}>
+          <AppBar
+            sx={{
+              position: { xs: "sticky", md: "static" },
+              height: "10%",
+              bgcolor: "white",
+              color: "black",
+              boxShadow: 3,
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            <Toolbar
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <IconButton>
+                <LightModeIcon />
+              </IconButton>
 
-            scrollbarWidth: { xs: "none", md: "auto" },
-            width: "100%",
-            height: { md: "100vh" },
-          }}
-        >
-          {<Outlet />}
-        </Container>
+              <Box display={"flex"} alignItems={"center"}>
+                <Typography mr={2}>Get things done, UserName</Typography>
+                <AvatarWithMenu menuItems={menuItems} />
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <Container
+            sx={{
+              p: { sm: 2 },
+              py: { xs: 1, sm: 2 },
+              scrollbarWidth: { xs: "none" },
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            {<Outlet />}
+          </Container>
+        </Box>
       </Stack>
     </>
   );

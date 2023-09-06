@@ -1,11 +1,8 @@
-import {
-  ThemeProvider,
-  createTheme,
-  responsiveFontSizes,
-} from "@mui/material/styles";
+import { FC } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { IThemeProvider } from "./types";
 
-export const Theme = ({ children }: IThemeProvider) => {
+export const Theme: FC<IThemeProvider> = ({ children }) => {
   const theme = createTheme({
     palette: {
       mode: "light",
