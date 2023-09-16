@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
 
-export const NotesPage = () => {
+export const NotePageLayout = () => {
   return <Outlet />;
 };

@@ -1,45 +1,17 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-
-import { privateRoutes, publicRoutes } from "./routes";
+import { privateRoutesList, publicRoutesList } from "./routes";
 import { FC } from "react";
-import { RoutesEnum } from "./routes/routesEnum";
-import { AppPage } from "@/pages/AppPage";
+import { useRoutes } from "react-router";
 
 export const AppRouter: FC = () => {
   const isAuth = true;
 
-  return isAuth ? (
-    <Routes>
-      <Route
-        path={RoutesEnum.ROOT}
-        element={<Navigate to={RoutesEnum.TODO} />}
-      />
-      <Route path={RoutesEnum.ROOT} element={<AppPage />}>
-        {privateRoutes.map((route) => {
-          return (
-            <Route
-              path={route.path}
-              element={<route.element />}
-              key={route.path}
-            />
-          );
-        })}
-      </Route>
+  const privateRoutes = useRoutes(privateRoutesList);
 
-      <Route path="*" element={<Navigate to={RoutesEnum.TODO} replace />} />
-    </Routes>
-  ) : (
-    <Routes>
-      {publicRoutes.map((route) => {
-        return (
-          <Route
-            path={route.path}
-            element={<route.element />}
-            key={route.path}
-          />
-        );
-      })}
-      <Route path="*" element={<Navigate to={RoutesEnum.LOGIN} replace />} />
-    </Routes>
-  );
+  const publicRoutes = useRoutes(publicRoutesList);
+
+  if (isAuth) {
+    return privateRoutes;
+  } else {
+    return publicRoutes;
+  }
 };

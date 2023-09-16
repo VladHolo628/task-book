@@ -1,11 +1,11 @@
 import { NoteForm } from "@/features/Notes/NoteForm";
 import { Stack, Typography, Box } from "@mui/material";
 
-export const NewNotePage = () => {
+export const EditNotePage = () => {
   return (
     <Stack>
-      <Typography variant="h4" color={"primary"} mb={4}>
-        New Note
+      <Typography variant="h4" color={"primary"}>
+        Edit Note
       </Typography>
       <Box>
         <NoteForm />

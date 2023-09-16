@@ -1,0 +1,1 @@
+export { NotePageLayout } from "./ui";

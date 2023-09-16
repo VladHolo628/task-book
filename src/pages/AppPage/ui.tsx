@@ -109,7 +109,7 @@ export const AppPage = () => {
               height: "100%",
             }}
           >
-            {<Outlet />}
+            <Outlet />
           </Container>
         </Box>
       </Stack>
