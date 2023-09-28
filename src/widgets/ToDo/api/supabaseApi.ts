@@ -4,7 +4,7 @@ export const getTasks = async () => {
   const { data } = await supabase.from("Tasks").select("*").order("isDone", {
     ascending: true,
   });
-  console.log(data);
+
   return data;
 };
 

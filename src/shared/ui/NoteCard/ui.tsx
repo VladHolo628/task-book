@@ -2,7 +2,7 @@ import { Card, CardContent, Chip, Stack, Typography } from "@mui/material";
 
 import { INoteCardProps } from "./types";
 
-export const NoteCard = ({ title, text, tags }: INoteCardProps) => {
+export const NoteCard = ({ title, text, category }: INoteCardProps) => {
   const noteCardTextLength = 150;
   const formattedNoteText = `${text?.slice(0, noteCardTextLength)}...`;
   return (
@@ -14,11 +14,7 @@ export const NoteCard = ({ title, text, tags }: INoteCardProps) => {
     >
       <CardContent>
         <Stack spacing={1} direction={"row"} mb={2}>
-          {tags.map((tag) => {
-            return (
-              <Chip label={tag.label} color="primary" variant="outlined" />
-            );
-          })}
+          <Chip label={category} color="primary" variant="outlined" />
         </Stack>
         <Typography color={"primary"} variant="h5">
           {title}
