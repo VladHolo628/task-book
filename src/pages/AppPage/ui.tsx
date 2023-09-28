@@ -107,6 +107,7 @@ export const AppPage = () => {
               scrollbarWidth: { xs: "none" },
               width: "100%",
               height: "100%",
+              position: "relative",
             }}
           >
             <Outlet />

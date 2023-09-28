@@ -16,10 +16,12 @@ export const NoteForm = () => {
           autoFocus
           variant="outlined"
           label="Title"
+          multiline
           sx={{
             width: "70%",
             height: "100%",
             fontSize: "30px",
+            mt: 2,
           }}
         />
         <Stack direction={"column"} spacing={2}>

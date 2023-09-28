@@ -3,7 +3,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 
 import { ITaskForm } from "./types";
-import { useTodoStore } from "@/shared/store/todoStore";
 
 export const TaskForm = ({
   onSubmit,
@@ -11,7 +10,6 @@ export const TaskForm = ({
   buttonText,
   placeholder,
 }: ITaskForm) => {
-  const tasks = useTodoStore((state) => state.tasks);
   const {
     register,
     handleSubmit,
@@ -31,12 +29,6 @@ export const TaskForm = ({
 
   const isValid = Boolean(errors.taskName);
 
-  const validateIsNotExists = (value: string) => {
-    const isExists = tasks.some((task) => task.name === value);
-    console.log(tasks);
-    return !isExists;
-  };
-
   return (
     <Box>
       <Box component={"form"} onSubmit={handleSubmit(submitHandler)}>
@@ -53,7 +45,6 @@ export const TaskForm = ({
             {...register("taskName", {
               required: true,
               maxLength: 200,
-              validate: validateIsNotExists,
             })}
             multiline
             fullWidth

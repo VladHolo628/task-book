@@ -1,15 +1,33 @@
 import { WidgetWrapper } from "@/shared/ui/WidgetWrapper";
-import { Box, List, Button, Typography, ListItem } from "@mui/material";
-import { IToDoProps } from "./types";
+import {
+  Box,
+  List,
+  Button,
+  Typography,
+  ListItem,
+  CircularProgress,
+} from "@mui/material";
+
 import { TaskItem } from "./components/TaskItem";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { AddTaskModal } from "./components/AddTaskModal";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getTasks } from "./api/supabaseApi";
 
-export const ToDo = ({ tasks }: IToDoProps) => {
+export const ToDo = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const {
+    data: tasksData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
 
   return (
     <WidgetWrapper widgetTitle="Tasks">
@@ -22,8 +40,24 @@ export const ToDo = ({ tasks }: IToDoProps) => {
             mb: 4,
           }}
         >
-          {tasks.length !== 0 ? (
-            tasks.map((task) => {
+          {isLoading && (
+            <Box display={"flex"} justifyContent={"center"}>
+              <CircularProgress />
+            </Box>
+          )}
+          {tasksData?.length === 0 && (
+            <ListItem
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Typography>Everything is done :)</Typography>
+            </ListItem>
+          )}
+
+          {tasksData &&
+            tasksData.map((task) => {
               return (
                 <ListItem
                   sx={{
@@ -33,19 +67,8 @@ export const ToDo = ({ tasks }: IToDoProps) => {
                   <TaskItem task={task} />
                 </ListItem>
               );
-            })
-          ) : (
-            <ListItem
-              sx={{
-                width: "100%",
-                justifyContent: "center",
-              }}
-            >
-              <Typography textAlign={"center"} variant="body2">
-                Everything is done :)
-              </Typography>
-            </ListItem>
-          )}
+            })}
+          {isError && <Typography>Sorry, mistakes were made</Typography>}
         </List>
         <Box textAlign={"center"}>
           <Button

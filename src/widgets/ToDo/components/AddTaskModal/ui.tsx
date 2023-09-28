@@ -1,27 +1,24 @@
 import { Box, IconButton, Modal, Typography } from "@mui/material";
 import { IModalProps } from "./types";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
-
 import CloseIcon from "@mui/icons-material/Close";
 import { FieldValues } from "react-hook-form";
-import { useTodoStore } from "@/shared/store/todoStore";
-
 import { TaskForm } from "../TaskForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addTask } from "../../api/supabaseApi";
 
 export const AddTaskModal = ({ open, onClose }: IModalProps) => {
-  const addTask = useTodoStore((state) => state.addTask);
+  const queryClient = useQueryClient();
 
-  const createTask = (taskData: FieldValues) => {
-    return {
-      id: Math.random() + 24 * 4.5,
-      name: taskData.taskName,
-      done: false,
-    };
-  };
+  const mutation = useMutation({
+    mutationFn: (taskName: string) => {
+      return addTask(taskName);
+    },
+    onSuccess: () => queryClient.invalidateQueries(["tasks"]),
+  });
 
   const onSubmit = (data: FieldValues) => {
-    addTask(createTask(data));
-
+    mutation.mutate(data.taskName);
     onClose();
   };
 

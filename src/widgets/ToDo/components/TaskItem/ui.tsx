@@ -14,20 +14,36 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ITaskItemProps } from "./types";
-import { useTodoStore } from "../../../../shared/store/todoStore";
+// import { useTodoStore } from "../../../../shared/store/todoStore";
 import { EditTaskModal } from "../EditTaskModal";
+import { deleteTask } from "../../api/supabaseApi";
+import { toggleTaskDone } from "../../api/supabaseApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const TaskItem = ({ task }: ITaskItemProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const taskDeleteMutation = useMutation({
+    mutationFn: (taskId: number) => {
+      return deleteTask(taskId);
+    },
+    onSuccess: () => queryClient.invalidateQueries(["tasks"]),
+  });
+
+  const toggleIsDoneMutation = useMutation({
+    mutationFn: (taskId: number) => {
+      return toggleTaskDone(taskId);
+    },
+    onSuccess: () => queryClient.invalidateQueries(["tasks"]),
+  });
 
   const handleEditModalOpen = () => setEditModalOpen(true);
   const handleEditModalClose = () => setEditModalOpen(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const deleteTask = useTodoStore((state) => state.deleteTask);
-
-  const toggleTaskDone = useTodoStore((state) => state.toggleTaskDone);
+  // const toggleTaskDone = useTodoStore((state) => state.toggleTaskDone);
 
   const open = Boolean(anchorEl);
 
@@ -40,12 +56,12 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
   };
 
   const handleDelete = () => {
-    deleteTask(task.id);
+    taskDeleteMutation.mutate(task.id);
     handleClose();
   };
 
   const handleCheck = () => {
-    toggleTaskDone(task.id);
+    toggleIsDoneMutation.mutate(task.id);
   };
 
   const handleEditButtonClick = () => {
@@ -109,16 +125,16 @@ export const TaskItem = ({ task }: ITaskItemProps) => {
     >
       <FormControlLabel
         sx={{
-          textDecoration: task.done ? "line-through" : "none",
+          textDecoration: task.isDone ? "line-through" : "none",
           cursor: "pointer",
 
           "&.MuiFormControlLabel-root": {
-            alignItems: "flex-start",
+            alignItems: "center",
             wordBreak: "break-word",
           },
         }}
         value={task.name}
-        control={<Checkbox checked={task.done} onChange={handleCheck} />}
+        control={<Checkbox checked={task.isDone} onChange={handleCheck} />}
         label={task.name}
       />
 

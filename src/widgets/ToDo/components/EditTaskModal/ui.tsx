@@ -3,9 +3,10 @@ import InsertCommentIcon from "@mui/icons-material/InsertComment";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { FieldValues } from "react-hook-form";
-import { useTodoStore } from "@/shared/store/todoStore";
 import { IEditModalProps } from "./types";
 import { TaskForm } from "../TaskForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editTaskName } from "../../api/supabaseApi";
 
 export const EditTaskModal = ({
   open,
@@ -13,10 +14,15 @@ export const EditTaskModal = ({
   taskId,
   taskName,
 }: IEditModalProps) => {
-  const editTaskName = useTodoStore((state) => state.editTaskName);
+  const queryClient = useQueryClient();
 
-  const onSubmit = (data: FieldValues) => {
-    editTaskName(taskId, data.taskName);
+  const editTaskMutation = useMutation({
+    mutationFn: (newTaskName: string) => editTaskName(taskId, newTaskName),
+    onSuccess: () => queryClient.invalidateQueries(["tasks"]),
+  });
+
+  const onSubmit = ({ taskName }: FieldValues) => {
+    editTaskMutation.mutate(taskName);
     onClose();
   };
 

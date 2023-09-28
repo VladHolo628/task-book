@@ -1,11 +1,10 @@
 import { ToDo } from "@/widgets/ToDo";
-import { useTodoStore } from "@/shared/store/todoStore";
+
 import { WeeklySuccess } from "@/widgets/WeeklySuccess";
 import { Box } from "@mui/material";
 import { ClockWidget } from "@/widgets/ClockWidget";
 
 export const TodoPage = () => {
-  const tasks = useTodoStore((state) => state.tasks);
   return (
     <Box
       sx={{
@@ -27,7 +26,7 @@ export const TodoPage = () => {
       </Box>
 
       <Box width={"100%"}>
-        <ToDo tasks={tasks} />
+        <ToDo />
       </Box>
     </Box>
   );

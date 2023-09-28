@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { ITodoState } from "./types";
 import { persist } from "zustand/middleware";
 import { ITask } from "@/widgets/ToDo/types";
+import { supabase } from "@/app/providers/supabase";
 
 // const BASE_URL = "https://task-book-a97d0-default-rtdb.firebaseio.com/";
 
@@ -9,6 +10,10 @@ export const useTodoStore = create<ITodoState>()(
   persist(
     (set) => ({
       tasks: [],
+      getTasks: async () => {
+        const { data } = await supabase.from("Tasks").select("*");
+        console.log(data);
+      },
       addTask: (task) => set((state) => ({ tasks: [...state.tasks, task] })),
       deleteTask: (taskId: number) =>
         set((state) => ({
