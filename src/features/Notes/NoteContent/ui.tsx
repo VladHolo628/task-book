@@ -12,6 +12,8 @@ import { BackButton } from "@/shared/ui/BackButton";
 import { useQuery } from "@tanstack/react-query";
 import { getAllNotes } from "../api/supabaseApi";
 
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 export const NoteContent = () => {
   const params = useParams();
   const noteId = params.id;
@@ -33,6 +35,7 @@ export const NoteContent = () => {
         <Stack py={4}>
           <Stack
             direction={{ xs: "column", sm: "row" }}
+            spacing={{ xs: 2, sm: 0 }}
             justifyContent={{ xs: "center", sm: "space-between" }}
           >
             <Typography
@@ -45,6 +48,14 @@ export const NoteContent = () => {
             <Chip label={note.category} />
             <Button component={Link} to={"edit"} variant="outlined">
               Edit
+            </Button>
+
+            <Button
+              variant="outlined"
+              endIcon={<DeleteForeverIcon />}
+              color="error"
+            >
+              Delete
             </Button>
           </Stack>
           <Paper
