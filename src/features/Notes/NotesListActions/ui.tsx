@@ -2,23 +2,23 @@ import { Button, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { NotesRoutes } from "@/shared/enums/routes";
 import { SearchInput } from "@/shared/ui/SearchInput";
-import { CategorySelect } from "@/widgets/CategorySelect";
-import { useForm } from "react-hook-form";
+import { INotesListActionsProps } from "./types";
 
-export const NotesListActions = () => {
-  const { control } = useForm();
+export const NotesListActions = ({
+  onSearchChangeHandler,
+}: INotesListActionsProps) => {
   return (
     <Stack direction={{ xs: "column", sm: "row" }} spacing={4}>
       <Button variant="contained" component={RouterLink} to={NotesRoutes.NEW}>
         New note
       </Button>
       <SearchInput
-        placeholder="Let's see"
+        onChange={(e) => onSearchChangeHandler(e.target.value)}
+        placeholder="Let's see ..."
         inputProps={{
           type: "text",
         }}
       />
-      <CategorySelect control={control} />
     </Stack>
   );
 };

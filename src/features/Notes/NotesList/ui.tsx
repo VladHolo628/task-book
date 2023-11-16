@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import { NotesListActions } from "../NotesListActions";
 import { useQuery } from "@tanstack/react-query";
 import { getAllNotes } from "../api/supabaseApi";
+import { generateHTML } from "@tiptap/react";
+import { extensions } from "@/features/Editor/utils/editorExtentions";
+import { useState } from "react";
 
 export const NotesList = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
   const {
     data: notesData,
     isLoading,
@@ -18,7 +23,9 @@ export const NotesList = () => {
   return (
     <Box py={2}>
       <Box mb={4}>
-        <NotesListActions />
+        <NotesListActions
+          onSearchChangeHandler={(data: string) => setSearchTerm(data)}
+        />
       </Box>
 
       {isLoading && (
@@ -35,25 +42,31 @@ export const NotesList = () => {
 
       {notesData && (
         <Grid container spacing={{ xs: 2, lg: 4 }} mt={6}>
-          {notesData.map((note) => {
-            return (
-              <Grid xs={12} sm={6} lg={4} item key={note.id}>
-                <Box
-                  sx={{
-                    textDecoration: "none",
-                  }}
-                  component={Link}
-                  to={String(note.id)}
-                >
-                  <NoteCard
-                    title={note.noteTitile}
-                    category={note.category}
-                    text={note.noteBody}
-                  />
-                </Box>
-              </Grid>
-            );
-          })}
+          {notesData
+            .filter((note) => note.searchData.includes(searchTerm))
+            .map((note) => {
+              const noteCategory = JSON.parse(note.category).label;
+              const noteText = generateHTML(note.noteBody, extensions);
+              const extractedNoteText = noteText.replace(/<[^>]+>/g, "");
+
+              return (
+                <Grid xs={12} sm={6} lg={4} item key={note.id}>
+                  <Box
+                    sx={{
+                      textDecoration: "none",
+                    }}
+                    component={Link}
+                    to={String(note.id)}
+                  >
+                    <NoteCard
+                      title={note.noteTitle}
+                      category={noteCategory}
+                      text={extractedNoteText}
+                    />
+                  </Box>
+                </Grid>
+              );
+            })}
         </Grid>
       )}
     </Box>

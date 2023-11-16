@@ -1,27 +1,32 @@
-import { Paper } from "@mui/material";
-import EditorJS from "@editorjs/editorjs";
-import DragDrop from "editorjs-drag-drop";
-import Undo from "editorjs-undo";
+import { Box } from "@mui/material";
+import { EditorProvider } from "@tiptap/react";
 
-import { tools } from "./tools";
+import { EditorToolbar } from "./components/EditorToolbar";
+import { EditorBubbleMenu } from "./components/EditorBubbleMenu";
+import "./styles/index.css";
+import { IEditorProps } from "./types";
+import { extensions } from "./utils/editorExtentions";
 
-export const Editor = ({ data }) => {
-  const editor = new EditorJS({
-    holder: "editorjs",
-    onReady: () => {
-      new DragDrop(editor);
-      new Undo(editor);
-    },
-    tools: tools,
-    data,
-  });
+export const Editor = ({ content, onChangeHandler }: IEditorProps) => {
   return (
-    <Paper
+    <Box
+      minHeight={"500px"}
+      border={1}
+      borderRadius={2}
+      p={2}
       sx={{
-        p: 2,
+        zIndex: "100000",
       }}
     >
-      <div id={"editorjs"}></div>
-    </Paper>
+      <EditorProvider
+        autofocus
+        extensions={extensions}
+        content={content}
+        onUpdate={({ editor }) => onChangeHandler(editor.getJSON())}
+        slotBefore={<EditorToolbar />}
+      >
+        <EditorBubbleMenu />
+      </EditorProvider>
+    </Box>
   );
 };

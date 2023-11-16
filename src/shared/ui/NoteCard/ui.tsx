@@ -10,6 +10,7 @@ export const NoteCard = ({ title, text, category }: INoteCardProps) => {
     <Card
       sx={{
         cursor: "pointer",
+        height: "100%",
       }}
       variant="outlined"
     >
@@ -22,10 +23,23 @@ export const NoteCard = ({ title, text, category }: INoteCardProps) => {
         >
           <Chip label={category} color="primary" variant="outlined" />
         </Stack>
-        <Typography color={"primary"} variant="h5">
+        <Typography
+          color={"primary"}
+          variant="h5"
+          sx={{
+            wordWrap: "break-word",
+          }}
+        >
           {title}
         </Typography>
-        <Typography mt={3}>{formattedNoteText}</Typography>
+        <Typography
+          mt={3}
+          sx={{
+            wordWrap: "break-word",
+          }}
+        >
+          {formattedNoteText}
+        </Typography>
       </CardContent>
     </Card>
   );

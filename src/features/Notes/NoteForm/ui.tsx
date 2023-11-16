@@ -1,15 +1,33 @@
 import { Editor } from "@/features/Editor";
 import { CategorySelect } from "@/widgets/CategorySelect";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Controller, FieldValues, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { INoteFormProps } from "./types";
 
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+export const NoteForm = ({
+  noteTitle = "",
+  noteCategory = "",
+  noteBody = "<p></p>",
+  onSubmit,
+}: INoteFormProps) => {
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      title: noteTitle,
+      category: noteCategory,
+      note: noteBody,
+    },
+  });
 
-export const NoteForm = () => {
-  const { register, handleSubmit, control } = useForm();
+  const navigate = useNavigate();
+
+  const submitHandler = (data: FieldValues) => {
+    onSubmit(data);
+    navigate("../");
+  };
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit((data) => submitHandler(data))}>
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
@@ -17,7 +35,7 @@ export const NoteForm = () => {
         alignItems={"end"}
       >
         <TextField
-          {...register("title", { required: true })}
+          {...register("title", { required: true, value: noteTitle })}
           type="text"
           autoFocus
           variant="outlined"
@@ -38,17 +56,19 @@ export const NoteForm = () => {
           <CategorySelect control={control} />
         </Stack>
       </Stack>
-      <TextField
-        {...register("body", { required: true })}
-        sx={{
-          fontSize: "30px",
-          my: 4,
-        }}
-        multiline
-        rows={20}
-        label="Note"
-        fullWidth
-      />
+      <Box my={4}>
+        <Controller
+          name="note"
+          control={control}
+          render={(field) => (
+            <Editor
+              content={field.field.value}
+              onChangeHandler={field.field.onChange}
+            />
+          )}
+        />
+      </Box>
+
       <Stack
         direction={"row"}
         spacing={2}
@@ -61,7 +81,6 @@ export const NoteForm = () => {
           Cancel
         </Button>
       </Stack>
-      <Editor data={{}} />
     </form>
   );
 };

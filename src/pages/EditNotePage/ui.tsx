@@ -1,4 +1,4 @@
-import { NoteForm } from "@/features/Notes/NoteForm";
+import { EditNoteForm } from "@/features/Notes/EditNoteForm";
 import { Stack, Typography, Box } from "@mui/material";
 
 export const EditNotePage = () => {
@@ -8,7 +8,7 @@ export const EditNotePage = () => {
         Edit Note
       </Typography>
       <Box>
-        <NoteForm />
+        <EditNoteForm />
       </Box>
     </Stack>
   );

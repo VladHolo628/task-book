@@ -30,23 +30,13 @@ export const CategorySelect = ({
     onSuccess: () => queryClient.invalidateQueries([queryKey]),
   });
 
-  // const customOption = ({ value, label }: { value: string; label: string }) => {
-  //   <Box display={"flex"} justifyContent={"space-between"}>
-  //     <Typography>{label}</Typography>
-  //     <Tooltip title="delete">
-  //       <IconButton>
-  //         <ClearIcon />
-  //       </IconButton>
-  //     </Tooltip>
-  //   </Box>;
-  // };
-
   return (
     <Box width={"200px"}>
       {categoriesData && (
         <Controller
           name="category"
           control={control}
+          rules={{ required: true }}
           render={(field) => (
             <Creatable
               onChange={field.field.onChange}

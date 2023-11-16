@@ -6,16 +6,22 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { generateHTML } from "@tiptap/core";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BackButton } from "@/shared/ui/BackButton";
-import { useQuery } from "@tanstack/react-query";
-import { getAllNotes } from "../api/supabaseApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteNote, getAllNotes } from "../api/supabaseApi";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Interweave } from "interweave";
+
+import { extensions } from "@/features/Editor/utils/editorExtentions";
+import "./styles/index.css";
 
 export const NoteContent = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const noteId = params.id;
 
   const {
@@ -27,9 +33,21 @@ export const NoteContent = () => {
     queryFn: getAllNotes,
   });
 
+  const noteDeleteMutation = useMutation({
+    mutationFn: (id: number) => deleteNote(id),
+    mutationKey: ["notes", `note-${noteId}`],
+  });
+
   const renderNoteContent = () => {
     if (notesData && isSuccess) {
       const note = notesData.find((item) => String(item.id) === noteId);
+
+      const noteCategory = JSON.parse(note.category).label;
+
+      const noteDeleteHandler = () => {
+        noteDeleteMutation.mutate(+noteId!);
+        navigate("../");
+      };
 
       return (
         <Stack py={4}>
@@ -37,20 +55,22 @@ export const NoteContent = () => {
             direction={{ xs: "column", sm: "row" }}
             spacing={{ xs: 2, sm: 0 }}
             justifyContent={{ xs: "center", sm: "space-between" }}
+            alignItems={{ sm: "center" }}
           >
             <Typography
               variant="h4"
               color={"primary"}
               textAlign={{ xs: "center", sm: "left" }}
             >
-              {note.noteTitile}
+              {note.noteTitle}
             </Typography>
-            <Chip label={note.category} />
+            <Chip label={noteCategory} />
             <Button component={Link} to={"edit"} variant="outlined">
               Edit
             </Button>
 
             <Button
+              onClick={noteDeleteHandler}
               variant="outlined"
               endIcon={<DeleteForeverIcon />}
               color="error"
@@ -68,7 +88,7 @@ export const NoteContent = () => {
               fontSize: "20px",
             }}
           >
-            {note.noteBody}
+            <Interweave content={generateHTML(note.noteBody, extensions)} />
           </Paper>
           <BackButton />
         </Stack>

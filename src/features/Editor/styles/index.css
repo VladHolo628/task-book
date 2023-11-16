@@ -1,0 +1,10 @@
+.tiptap li {
+  margin-left: 20px;
+}
+.tiptap {
+  height: 100%;
+}
+
+.ProseMirror {
+  height: 100%;
+}
